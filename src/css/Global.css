@@ -1,0 +1,30 @@
+.brand-logo {
+	margin-left: 20px;
+	font-family: "Viga", sans-serif;
+}
+
+.input-field input[type="text"]:focus + label,
+.input-field input[type="number"]:focus + label,
+.input-field input[type="password"]:focus + label,
+.input-field input[type="email"]:focus + label,
+.input-field input[type="url"]:focus + label,
+.input-field input[type="date"]:focus + label,
+.input-field input[type="time"]:focus + label,
+.input-field input[type="datetime-local"]:focus + label,
+.input-field input[type="tel"]:focus + label,
+.input-field input[type="number"]:focus + label,
+.input-field input[type="search"]:focus + label,
+.input-field textarea.materialize-textarea:focus + label {
+	color: #000 !important;
+}
+
+.input-field input[type="text"]:focus,
+.input-field input[type="number"]:focus,
+.input-field input[type="password"]:focus {
+	border-bottom: 1px solid #000 !important;
+	box-shadow: 0 1px 0 0 #000 !important;
+}
+
+ul.dropdown-content.select-dropdown li span {
+	color: #000000;
+}

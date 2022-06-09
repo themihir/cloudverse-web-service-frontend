@@ -1,0 +1,32 @@
+header,
+main,
+footer {
+	padding-left: 300px;
+}
+
+.dns {
+	font-family: "JetBrains Mono", monospace;
+}
+
+.dns i {
+	position: relative;
+	top: 3px;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+.status i {
+	position: relative;
+	top: 3px;
+	font-size: 1rem;
+	padding-right: 5px;
+}
+
+.status {
+	font-size: 0.9rem;
+}
+
+.resumeAction i {
+	font-size: 1.2rem;
+	cursor: pointer;
+}

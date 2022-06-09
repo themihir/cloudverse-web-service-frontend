@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&family=Viga&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+		<link rel="stylesheet" href="css/Global.css" />
+		<link rel="stylesheet" href="css/Auth.css" />
+		<link rel="stylesheet" href="css/Dashboard.css" />
+		<title>The Cloudverse</title>
+	</head>
+	<body>
+		<ul id="slide-out" class="sidenav sidenav-fixed">
+			<li>
+				<div class="user-view">
+					<div class="background">
+						<img
+							src="https://images.unsplash.com/photo-1556139943-4bdca53adf1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+						/>
+					</div>
+					<a href="#user"><img class="circle" src="./user.png" /></a>
+					<a href="#name"><span class="name black-text" id="name"></span></a>
+					<a href="#email"><span class="email black-text" id="email"></span></a>
+				</div>
+			</li>
+			<li>
+				<a href="index.html"><i class="material-icons left">home</i>Dashboard</a>
+			</li>
+			<li>
+				<a href="#!"><i class="material-icons left">person</i>Profile</a>
+			</li>
+			<li>
+				<a href="#" class="logout"><i class="material-icons left">power_settings_new</i>Logout</a>
+			</li>
+			<li><div class="divider"></div></li>
+			<li><a class="subheader">Actions</a></li>
+			<li>
+				<a class="waves-effect modal-trigger" href="#createModal"><i class="material-icons">add</i>Create New Workstation</a>
+			</li>
+		</ul>
+
+		<div id="createModal" class="modal">
+			<div class="modal-content">
+				<div class="row">
+					<div class="col s12 center">
+						<h5 class="light">New Workstation</h5>
+					</div>
+					<div class="row"></div>
+					<div class="row"></div>
+					<div class="row"></div>
+					<div class="col s4 offset-s2 input-field">
+						<select id="workloadTypeSelect">
+							<option value="" disabled selected>Choose your option</option>
+							<option value="t2.small">Small (1 vCPUs, 2 GB RAM)</option>
+							<option value="t2.medium">Medium (2 vCPUs, 4 GB RAM)</option>
+							<option value="t2.large">Large (2 vCPUs, 8 GB RAM)</option>
+						</select>
+						<label>Select Workload Type</label>
+					</div>
+					<div class="col s4 input-field">
+						<input placeholder="Enter Disk Space [30-80]" id="diskSpaceSelect" type="number" />
+						<label for="diskSpaceSelect">Disk Space</label>
+					</div>
+				</div>
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="row"></div>
+			</div>
+			<div class="modal-footer">
+				<a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="createWorkstation()">Create Workstation</a>
+			</div>
+		</div>
+
+		<main>
+			<nav class="purple darken-4">
+				<div class="nav-wrapper">
+					<a href="#" class="brand-logo">The Cloudverse</a>
+					<ul id="nav-mobile" class="right hide-on-med-and-down">
+						<li>
+							<a href="#" id="logout" class="logout"><i class="material-icons left">power_settings_new</i>Logout</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<div class="row"></div>
+			<div class="row"></div>
+			<div class="row"></div>
+
+			<div class="row">
+				<div class="col s10 offset-s1">
+					<h5 class="light">Your Workstations</h5>
+				</div>
+			</div>
+
+			<div class="row hide" id="noWorkstation">
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="col s12 center">
+					<h5 class="light">You Don't Have Any Workstations Yet!</h5>
+				</div>
+			</div>
+
+			<div class="row"></div>
+			<div class="row"></div>
+
+			<div class="row" id="workstationTable">
+				<div class="col s10 offset-s1">
+					<table class="striped">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Current State</th>
+								<th>Workload Type</th>
+								<th>Disk Space</th>
+								<th>Operating System</th>
+								<th>DNS</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+
+						<tbody id="tbody"></tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1104.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+			integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script src="./js/Cognito.js"></script>
+		<script src="./js/LocalStorage.js"></script>
+		<script src="./js/Auth.js"></script>
+		<script src="./js/Dashboard.js"></script>
+	</body>
+</html>

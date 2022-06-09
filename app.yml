@@ -1,0 +1,10 @@
+version: "2"
+services:
+    cloudverse:
+        image: parthshahk/cloudverse-vcollege
+        restart: always
+        environment:
+            - VIRTUAL_HOST=cloudverse.app
+            - LETSENCRYPT_HOST=cloudverse.app
+            - LETSENCRYPT_EMAIL=parthshahk@gmail.com
+            - VIRTUAL_PORT=3000
